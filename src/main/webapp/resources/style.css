@@ -1,0 +1,56 @@
+header {
+    left: 100px;
+}
+
+#image {
+    position: relative;
+    left: 10%;
+}
+
+footer {
+    text-align: right;
+}
+
+footer div{
+    right: 10%;
+    position: relative;
+}
+
+body {
+    background-color: #e1ecf8;
+}
+
+.carsPanel {
+    width: 85%;
+    margin: auto;
+}
+
+.buttons {
+    margin: 10px;
+}
+
+.output-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.timePanelGrid td {
+    padding: 3px 3px;
+}
+
+#car-panel {
+    width: 600px;
+}
+
+.input-text {
+    width: 100%;
+}
+
+.centered{
+    margin: 0 auto;
+}
+
+.topBottomMargin {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}

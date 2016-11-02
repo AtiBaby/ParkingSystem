@@ -1,0 +1,10 @@
+managedbeans\CarMB.class
+managedbeans\CreateCarMB.class
+ejb\ParkingCarsService.class
+managedbeans\SelectionMB.class
+ejb\CarsService.class
+managedbeans\DeleteCarMB.class
+managedbeans\ParkingMB.class
+model\Car.class
+ejb\CarsServiceImpl.class
+ejb\ParkingCarsServiceImpl.class

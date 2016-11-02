@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <ui:composition template="template.xhtml">
+        
+        <f:metadata>
+            <f:viewParam id="LPN" name="LPN" value="#{selectionBean.selectedCar.license_plate_number}"/>
+            <f:viewAction action="#{parkingBean.onLoad}"/>
+        </f:metadata>
+        
+        <ui:define name="title">Parkolás</ui:define>
+        
+        <ui:define name="body">
+            <p:panel id="selectedCarPanel" styleClass="carsPanel topBottomMargin">
+                <p:growl id="growl"/>
+                <p:panelGrid id="car-panel" columns="2" styleClass="centered">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">A kiválasztott autó adatai</p:column>
+                        </p:row>
+                    </f:facet>
+                    <h:outputText value="Rendszám:"/>
+                    <h:outputText value="#{selectionBean.selectedCar.license_plate_number}"/>
+                    <h:outputText value="Márka:"/>
+                    <h:outputText value="#{selectionBean.selectedCar.brand}"/>
+                    <h:outputText value="Típus:"/>
+                    <h:outputText value="#{selectionBean.selectedCar.type}"/>
+                    <h:outputText value="Szín:"/>
+                    <h:outputText value="#{selectionBean.selectedCar.color}"/>
+                </p:panelGrid>
+                <p:tabView rendered="#{selectionBean.selectedCar.isParking == false}" styleClass="topBottomMargin centered">
+                    <p:tab title="Parkoló 1">
+                        <h:form>
+                            <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
+                                <h:outputText styleClass="output-text" value="Parkolás kezdete:"/>
+                                <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.startDate}"
+                                            required="true" requiredMessage="Kezdő időpont megadása kötelező!"/>
+                                <h:outputText styleClass="output-text" value="Parkolás vége:"/>
+                                <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.endDate}"
+                                            required="true" requiredMessage="Végidőpont megadása kötelező!"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Mentés" update="selectedCarPanel growl"
+                                             actionListener="#{parkingBean.executeParking('Parkoló 1')}"/>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="Parkoló 2">
+                        <h:form>
+                            <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
+                                <h:outputText value="Parkolás kezdete:"/>
+                                <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.startDate}"
+                                            required="true" requiredMessage="Kezdő időpont megadása kötelező!"/>
+                                <h:outputText value="Parkolás vége:"/>
+                                <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.endDate}"
+                                            required="true" requiredMessage="Végidőpont megadása kötelező!"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Mentés" update="selectedCarPanel growl"
+                                             actionListener="#{parkingBean.executeParking('Parkoló 2')}"/>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="Parkoló 3">
+                        <h:form>
+                            <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
+                                <h:outputText value="Parkolás kezdete:"/>
+                                <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.startDate}"
+                                            required="true" requiredMessage="Kezdő időpont megadása kötelező!"/>
+                                <h:outputText value="Parkolás vége:"/>
+                                <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.endDate}"
+                                            required="true" requiredMessage="Végidőpont megadása kötelező!"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Mentés" update="selectedCarPanel growl"
+                                             actionListener="#{parkingBean.executeParking('Parkoló 3')}"/>
+                        </h:form>
+                    </p:tab>
+                </p:tabView>
+                <p:panelGrid styleClass="topBottomMargin centered"
+                             rendered="#{selectionBean.selectedCar.isParking eq true}">
+                    <p:row>
+                        <p:column colspan="2">Az autó már a parkolóban van.</p:column>
+                    </p:row>
+                    <p:row>
+                    <p:column><h:outputText value="Parkoló:"/></p:column>
+                    <p:column><h:outputText value="#{selectionBean.selectedCar.parkingPlace}"/></p:column>
+                    </p:row>
+                    <p:row>
+                    <p:column><h:outputText value="Parkolás kezdete:"/></p:column>
+                    <p:column><h:outputText value="#{selectionBean.selectedCar.formattedStartTime}"/></p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Parkolás vége:"/></p:column>
+                        <p:column><h:outputText value="#{selectionBean.selectedCar.formattedEndTime}"/></p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:button value="Vissza" outcome="cars"/>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
