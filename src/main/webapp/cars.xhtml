@@ -10,9 +10,10 @@
         <ui:define name="title">Autók</ui:define>
         
         <ui:define name="body">
+            <h:form>
             <p:panel id="cars" styleClass="carsPanel">
                 <p:growl id="growl"/>
-                <h:form>
+                <p:poll interval="3" update="cars"/>
                 <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single" 
                              selection="#{carBean.selectedCar}" rowKey="#{car.license_plate_number}">
                     <f:facet name="header">
@@ -30,6 +31,9 @@
                     <p:column headerText="Szín">
                         <h:outputText value="#{car.color}"/>
                     </p:column>
+                    <p:column headerText="Parkol éppen">
+                        <h:outputText value="#{car.isParking ? 'Igen' : 'Nem'}"/>
+                    </p:column>
                 </p:dataTable>
                 <div class="buttons">
                     <p:commandButton value="Új autó hozzáadása" type="button" 
@@ -39,40 +43,37 @@
                     <p:commandButton action="#{deleteCarBean.deleteCar}"
                                      value="Autótörlés" update="cars"/>
                 </div>
-                </h:form>
             </p:panel>
             
             <p:dialog modal="true" header="Add new car" widgetVar="addCar">
-                <h:form>
                     <p:messages id="requiredMessage"/>
                     <p:panel id="addPanel">
-                    <p:panelGrid columns="2" layout="grid">
-                        <h:outputText value="Rendszám: *"/>
-                        <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.license_plate_number}" 
-                                     required="true" requiredMessage="Rendszám kötelező"/>
+                    <p:panelGrid columns="3" layout="grid">
+                        <h:outputText value="Rendszám:" styleClass="required-label"/>
+                        <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
+                        <p:message for="lpn"/>
                         
-                        <h:outputText value="Márka: *"/>
-                        <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"
-                                     requiredMessage="Márka megadása kötelező" required="true"/>
+                        <h:outputText value="Márka:" styleClass="required-label"/>
+                        <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"/>
+                        <p:message for="brand"/>
 
-                        <h:outputText value="Típus: *"/>
+                        <h:outputText value="Típus:" styleClass="required-label"/>
                         <p:inputText id="type" styleClass="input-text"
-                                     value="#{carBean.newCar.type}"
-                                     requiredMessage="Típus kötelező"
-                                     required="true"/>
+                                     value="#{carBean.newCar.type}"/>
+                        <p:message for="type"/>
 
-                        <h:outputText value="Szín: *"/>
+                        <h:outputText value="Szín:" styleClass="required-label"/>
                         <p:inputText id="color" styleClass="input-text"
-                                     value="#{carBean.newCar.color}"
-                                     requiredMessage="Szín megadása kötelező" required="true"/>
+                                     value="#{carBean.newCar.color}"/>
+                        <p:message for="color"/>
                     </p:panelGrid>
                     <div class="buttons">
                          <p:commandButton value="Hozzáad" update="cars addPanel"
                                      action="#{createCarBean.doCreate}"/>
                     </div>
                     </p:panel>
-                </h:form>
             </p:dialog>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

@@ -1,5 +1,8 @@
 package model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,9 +12,11 @@ import java.util.List;
  *
  * @author Attila
  */
+@Getter
+@Setter
 public class Car {
     
-    private String license_plate_number;
+    private String licensePlateNumber;
     private String brand;
     private String type;
     private String color;
@@ -24,7 +29,7 @@ public class Car {
     public static List<Car> cars = new ArrayList<Car>();
 
     public Car(String license_plate_number, String brand, String type, String color) {
-        this.license_plate_number = license_plate_number;
+        this.licensePlateNumber = license_plate_number;
         this.brand = brand;
         this.type = type;
         this.color = color;
@@ -34,67 +39,11 @@ public class Car {
     }
     
     public String getLicense_plate_number() {
-        return license_plate_number;
+        return licensePlateNumber;
     }
 
-    public void setLicense_plate_number(String license_plate_number) {
-        this.license_plate_number = license_plate_number;
-    }
-    
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Boolean getIsParking() {
-        return isParking;
-    }
-
-    public void setIsParking(Boolean isParking) {
-        this.isParking = isParking;
-    }
-
-    public String getParkingPlace() {
-        return parkingPlace;
-    }
-
-    public void setParkingPlace(String parkingPlace) {
-        this.parkingPlace = parkingPlace;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setLicense_plate_number(String licensePlateNumber) {
+        this.licensePlateNumber = licensePlateNumber;
     }
     
     public String getFormattedStartTime(){

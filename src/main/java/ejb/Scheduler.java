@@ -24,8 +24,9 @@ public class Scheduler {
     @Inject
     private CarMB carMB;
 
+    /*Every 5 second it checks that parking time of one car is expired.*/
     @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-    public void automaticTimeout() {
+    public void parkingTimeExpired() {
         for (Car car : carMB.getCars()) {
             if (car.getEndTime().isBefore(ZonedDateTime.now().toLocalDateTime())) {
                 car.setIsParking(false);

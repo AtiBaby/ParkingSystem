@@ -54,3 +54,10 @@ body {
     margin-bottom: 5px;
     margin-top: 5px;
 }
+
+.required-label:after {
+    font-weight: bold;
+    content: " *";
+    color: red;
+    font-size: 125%;
+}

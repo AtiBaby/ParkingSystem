@@ -9,7 +9,7 @@
 <ui:composition template="template.xhtml">
 
     <f:metadata>
-        <f:viewParam id="LPN" name="LPN" value="#{selectionBean.selectedCar.license_plate_number}"/>
+        <f:viewParam id="LPN" name="LPN" value="#{selectionBean.selectedCar.licensePlateNumber}"/>
         <f:viewAction action="#{parkingBean.onLoad}"/>
     </f:metadata>
 
@@ -25,7 +25,7 @@
                     </p:row>
                 </f:facet>
                 <h:outputText value="Rendszám:"/>
-                <h:outputText value="#{selectionBean.selectedCar.license_plate_number}"/>
+                <h:outputText value="#{selectionBean.selectedCar.licensePlateNumber}"/>
                 <h:outputText value="Márka:"/>
                 <h:outputText value="#{selectionBean.selectedCar.brand}"/>
                 <h:outputText value="Típus:"/>
