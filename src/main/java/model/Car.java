@@ -15,7 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Car {
-    
+
+    private String coutry;
     private String licensePlateNumber;
     private String brand;
     private String type;
@@ -36,14 +37,6 @@ public class Car {
     }
 
     public Car() {
-    }
-    
-    public String getLicense_plate_number() {
-        return licensePlateNumber;
-    }
-
-    public void setLicense_plate_number(String licensePlateNumber) {
-        this.licensePlateNumber = licensePlateNumber;
     }
     
     public String getFormattedStartTime(){

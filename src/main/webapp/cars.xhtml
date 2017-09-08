@@ -15,12 +15,12 @@
                 <p:growl id="growl"/>
                 <p:poll interval="3" update="cars"/>
                 <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single" 
-                             selection="#{carBean.selectedCar}" rowKey="#{car.license_plate_number}">
+                             selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}">
                     <f:facet name="header">
                         Autók
                     </f:facet>
                     <p:column headerText="Rendszám">
-                        <h:outputText value="#{car.license_plate_number}"/>
+                        <h:outputText value="#{car.licensePlateNumber}"/>
                     </p:column>
                     <p:column headerText="Márka">
                         <h:outputText value="#{car.brand}"/>
@@ -37,7 +37,7 @@
                 </p:dataTable>
                 <div class="buttons">
                     <p:commandButton value="Új autó hozzáadása" type="button" 
-                                     onclick="PF('addCar').show();"/>
+                                     onclick="PF('addCarVar').show();"/>
                     <p:commandButton actionListener="#{parkingBean.goParking}" ajax="true"
                                      value="Parkolás" update="growl"/>
                     <p:commandButton action="#{deleteCarBean.deleteCar}"
@@ -45,31 +45,27 @@
                 </div>
             </p:panel>
             
-            <p:dialog modal="true" header="Add new car" widgetVar="addCar">
+            <p:dialog modal="true" header="Add new car" widgetVar="addCarVar">
                     <p:messages id="requiredMessage"/>
                     <p:panel id="addPanel">
-                    <p:panelGrid columns="3" layout="grid">
-                        <h:outputText value="Rendszám:" styleClass="required-label"/>
+                    <p:panelGrid columns="2" layout="grid">
+                        <p:outputLabel value="Rendszám:" styleClass="required-label"/>
                         <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
-                        <p:message for="lpn"/>
                         
-                        <h:outputText value="Márka:" styleClass="required-label"/>
+                        <p:outputLabel value="Márka:" styleClass="required-label"/>
                         <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"/>
-                        <p:message for="brand"/>
 
-                        <h:outputText value="Típus:" styleClass="required-label"/>
+                        <p:outputLabel value="Típus:" styleClass="required-label"/>
                         <p:inputText id="type" styleClass="input-text"
                                      value="#{carBean.newCar.type}"/>
-                        <p:message for="type"/>
 
-                        <h:outputText value="Szín:" styleClass="required-label"/>
+                        <p:outputLabel value="Szín:" styleClass="required-label"/>
                         <p:inputText id="color" styleClass="input-text"
                                      value="#{carBean.newCar.color}"/>
-                        <p:message for="color"/>
                     </p:panelGrid>
                     <div class="buttons">
-                         <p:commandButton value="Hozzáad" update="cars addPanel"
-                                     action="#{createCarBean.doCreate}"/>
+                         <p:commandButton value="Hozzáad" update="cars addPanel requiredMessage"
+                                          action="#{createCarBean.doCreate}"/>
                     </div>
                     </p:panel>
             </p:dialog>

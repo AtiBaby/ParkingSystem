@@ -44,7 +44,7 @@ public class ParkingMB {
         } else {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             try {
-                ec.redirect(ec.getRequestContextPath() + "/parking.xhtml?LPN=" + carMB.getSelectedCar().getLicense_plate_number());
+                ec.redirect(ec.getRequestContextPath() + "/parking.xhtml?LPN=" + carMB.getSelectedCar().getLicensePlateNumber());
             } catch (IOException e) {
                 System.out.println("Bad redirect.");
             }
@@ -52,7 +52,7 @@ public class ParkingMB {
     }
     
     public void onLoad(){
-        String LPN = selectionMB.getSelectedCar().getLicense_plate_number();
+        String LPN = selectionMB.getSelectedCar().getLicensePlateNumber();
         selectionMB.setSelectedCar(carsService.getCarByLPN(LPN));
         selectionMB.setParkingCars(parkingCarsService.getParkingCars());
     }

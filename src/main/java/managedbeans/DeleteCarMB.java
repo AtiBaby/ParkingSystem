@@ -29,7 +29,7 @@ public class DeleteCarMB {
                 "Törléshez válassz ki egy autót!",null));
         } else if (carMB.getSelectedCar().getIsParking()){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Az " + carMB.getSelectedCar().getLicense_plate_number() + " rendszámú autó egy parkolóban van, "
+                "Az " + carMB.getSelectedCar().getLicensePlateNumber() + " rendszámú autó egy parkolóban van, "
                     + "így nem lehet törölni!",null));
         } else {
             carsService.deleteCar(carMB.getSelectedCar());

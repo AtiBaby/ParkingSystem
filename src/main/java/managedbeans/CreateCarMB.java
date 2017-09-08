@@ -3,6 +3,7 @@ package managedbeans;
 import com.sun.faces.component.visit.FullVisitContext;
 import ejb.CarsService;
 import model.Car;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
 import javax.ejb.EJB;
@@ -37,7 +38,7 @@ public class CreateCarMB {
         if(requiredFieldsNotEmpty(carMB.getNewCar())) {
             Boolean containIt = false;
             for (Car car : carMB.getCars()) {
-                if (carMB.getNewCar().getLicense_plate_number().equals(car.getLicense_plate_number())) {
+                if (carMB.getNewCar().getLicensePlateNumber().equals(car.getLicensePlateNumber())) {
                     containIt = true;
                 }
             }
@@ -46,9 +47,9 @@ public class CreateCarMB {
             } else {
             /* Extra: Rendszám formátumának ellenőrzése. Csak angol ABC betűi, whitespace és kötőjel lehetnek benne.
              Ha valid, akkor az autó hozzáadása sikeresen megtörténik.*/
-                String carLPN = carMB.getNewCar().getLicense_plate_number().toUpperCase();
+                String carLPN = carMB.getNewCar().getLicensePlateNumber().toUpperCase();
                 if (validLPN(carLPN)) {
-                    carMB.getNewCar().setLicense_plate_number(carLPN);
+                    carMB.getNewCar().setLicensePlateNumber(carLPN);
                     carsService.addCar(carMB.getNewCar());
                     carMB.setNewCar(new Car());
                     carMB.setCars(carsService.getCars());
@@ -62,20 +63,20 @@ public class CreateCarMB {
 
     private boolean requiredFieldsNotEmpty(Car newCar) {
         boolean notEmpty = true;
-        if ("".equals(newCar.getLicensePlateNumber())) {
-            addFacesMessageForComponents("Rendszám megadása kötelező!", "lpn");
+        if (newCar.getLicensePlateNumber() == null || StringUtils.isEmpty(newCar.getLicensePlateNumber())) {
+            addFacesMessageForComponents("Rendszám megadása kötelező!", "requiredMessage");
             notEmpty = false;
         }
-        if ("".equals(newCar.getBrand())) {
-            addFacesMessageForComponents("Autó márka megadása kötelező!", "brand");
+        if (newCar.getBrand() == null || StringUtils.isEmpty(newCar.getBrand())) {
+            addFacesMessageForComponents("Autó márka megadása kötelező!", "requiredMessage");
             notEmpty = false;
         }
-        if ("".equals(newCar.getType())) {
-            addFacesMessageForComponents("Autó típusának megadása kötelező!", "type");
+        if (newCar.getType() == null || StringUtils.isEmpty(newCar.getType())) {
+            addFacesMessageForComponents("Autó típusának megadása kötelező!", "requiredMessage");
             notEmpty = false;
         }
-        if ("".equals(newCar.getColor())) {
-            addFacesMessageForComponents("Autó színének megadása kötelező!", "color");
+        if (newCar.getColor() == null || StringUtils.isEmpty(newCar.getColor())) {
+            addFacesMessageForComponents("Autó színének megadása kötelező!", "requiredMessage");
             notEmpty = false;
         }
         return notEmpty;

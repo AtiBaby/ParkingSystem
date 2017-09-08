@@ -25,8 +25,8 @@ public class CarsServiceImpl implements CarsService{
     @Override
     public Car getCarByLPN(String LPN) {
         for (Car car: Car.cars){
-            System.out.println(car.getLicense_plate_number());
-            if (LPN.equals(car.getLicense_plate_number())){
+            System.out.println(car.getLicensePlateNumber());
+            if (LPN.equals(car.getLicensePlateNumber())){
                 return car;
             }
         }

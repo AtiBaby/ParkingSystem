@@ -19,11 +19,11 @@ public class ParkingCarsServiceImpl implements ParkingCarsService{
     public void addParkingCar(Car car) {
         Car.cars.remove(car);
         for (Car car1: Car.cars){
-            System.out.println(car1.getLicense_plate_number());
+            System.out.println(car1.getLicensePlateNumber());
         }
         Car.cars.add(car);
         for (Car car1: Car.cars){
-            System.out.println(car1.getLicense_plate_number());
+            System.out.println(car1.getLicensePlateNumber());
         }
     }
 

@@ -61,3 +61,7 @@ body {
     color: red;
     font-size: 125%;
 }
+
+.required-label {
+    font-weight: bold;
+}
