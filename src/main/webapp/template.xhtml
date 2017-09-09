@@ -5,27 +5,38 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    
+<f:view locale="#{languageMBean.locale}">
+
     <h:head>
-        <title><ui:insert name="title"/></title>
+        <title>
+            <ui:insert name="title"/>
+        </title>
     </h:head>
 
     <h:body>
         <h:outputStylesheet name="bootstrap.min.css"/>
         <h:outputStylesheet name="style.css"/>
         <header>
-            <div id="image">
-                <h:graphicImage library="images" name="logo.png" style="width: 70%" class="img-responsive"/>
-            </div>
+            <h:form>
+                <p:panelGrid columns="3" styleClass="menuPanelGrid">
+                    <p:graphicImage library="images" name="logo.png" style="width: 70%"/>
+                    <p:commandLink action="#{languageMBean.changeLanguage('en')}">
+                        <p:graphicImage name="images/EN.gif" style="width: 30px"/>
+                    </p:commandLink>
+                    <p:commandLink action="#{languageMBean.changeLanguage('hu')}">
+                        <p:graphicImage name="images/HU.gif" style="width: 30px"/>
+                    </p:commandLink>
+                </p:panelGrid>
+            </h:form>
         </header>
-
 
         <section id="main-content" class="main-content">
             <ui:insert name="body"/>
         </section>
 
         <footer>
-            <div>© 2016 ParkingSystem</div>
+            <div>© 2017 ParkingSystem</div>
         </footer>
     </h:body>
+</f:view>
 </html>

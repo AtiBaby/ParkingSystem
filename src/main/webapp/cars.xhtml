@@ -15,7 +15,8 @@
                 <p:growl id="growl"/>
                 <p:poll interval="3" update="cars"/>
                 <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single" 
-                             selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}">
+                             selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}"
+                             emptyMessage="#{bundle['no.car']}">
                     <f:facet name="header">
                         Autók
                     </f:facet>

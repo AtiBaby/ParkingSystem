@@ -65,3 +65,15 @@ body {
 .required-label {
     font-weight: bold;
 }
+
+.menuPanelGrid tr, .menuPanelGrid td {
+    border: none !important;
+}
+
+.menuPanelGrid tr, .menuPanelGrid td {
+    background: transparent;
+}
+
+.menuPanelGrid {
+    margin: 0 auto;
+}
