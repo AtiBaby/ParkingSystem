@@ -20,52 +20,52 @@
                     <f:facet name="header">
                         Autók
                     </f:facet>
-                    <p:column headerText="Rendszám">
+                    <p:column headerText="#{bundle['license.plate.number']}">
                         <h:outputText value="#{car.licensePlateNumber}"/>
                     </p:column>
-                    <p:column headerText="Márka">
+                    <p:column headerText="#{bundle['brand']}">
                         <h:outputText value="#{car.brand}"/>
                     </p:column>
-                    <p:column headerText="Típus">
+                    <p:column headerText="#{bundle['type']}">
                         <h:outputText value="#{car.type}"/>
                     </p:column>
-                    <p:column headerText="Szín">
+                    <p:column headerText="#{bundle['color']}">
                         <h:outputText value="#{car.color}"/>
                     </p:column>
-                    <p:column headerText="Parkol éppen">
-                        <h:outputText value="#{car.isParking ? 'Igen' : 'Nem'}"/>
+                    <p:column headerText="#{bundle['is.parking']}">
+                        <h:outputText value="#{car.isParking ? bundle['yes'] : bundle['no']}"/>
                     </p:column>
                 </p:dataTable>
                 <div class="buttons">
-                    <p:commandButton value="Új autó hozzáadása" type="button" 
+                    <p:commandButton value="#{bundle['add.new.car']}" type="button"
                                      onclick="PF('addCarVar').show();"/>
                     <p:commandButton actionListener="#{parkingBean.goParking}" ajax="true"
-                                     value="Parkolás" update="growl"/>
+                                     value="#{bundle['parking']}" update="growl"/>
                     <p:commandButton action="#{deleteCarBean.deleteCar}"
-                                     value="Autótörlés" update="cars"/>
+                                     value="#{bundle['delete.car']}" update="cars"/>
                 </div>
             </p:panel>
             
-            <p:dialog modal="true" header="Add new car" widgetVar="addCarVar">
+            <p:dialog modal="true" header="#{bundle['add.new.car']}" widgetVar="addCarVar">
                     <p:messages id="requiredMessage"/>
                     <p:panel id="addPanel">
                     <p:panelGrid columns="2" layout="grid">
-                        <p:outputLabel value="Rendszám:" styleClass="required-label"/>
+                        <p:outputLabel value="#{bundle['license.plate.number']}:" styleClass="required-label"/>
                         <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
                         
-                        <p:outputLabel value="Márka:" styleClass="required-label"/>
+                        <p:outputLabel value="#{bundle['brand']}:" styleClass="required-label"/>
                         <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"/>
 
-                        <p:outputLabel value="Típus:" styleClass="required-label"/>
+                        <p:outputLabel value="#{bundle['type']}:" styleClass="required-label"/>
                         <p:inputText id="type" styleClass="input-text"
                                      value="#{carBean.newCar.type}"/>
 
-                        <p:outputLabel value="Szín:" styleClass="required-label"/>
+                        <p:outputLabel value="#{bundle['color']}:" styleClass="required-label"/>
                         <p:inputText id="color" styleClass="input-text"
                                      value="#{carBean.newCar.color}"/>
                     </p:panelGrid>
                     <div class="buttons">
-                         <p:commandButton value="Hozzáad" update="cars addPanel requiredMessage"
+                         <p:commandButton value="#{bundle['add']}" update="cars addPanel requiredMessage"
                                           action="#{createCarBean.doCreate}"/>
                     </div>
                     </p:panel>

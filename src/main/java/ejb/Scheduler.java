@@ -28,7 +28,7 @@ public class Scheduler {
     @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
     public void parkingTimeExpired() {
         for (Car car : carMB.getCars()) {
-            if (car.getEndTime().isBefore(ZonedDateTime.now().toLocalDateTime())) {
+            if (car.getIsParking() && car.getEndTime().isBefore(ZonedDateTime.now().toLocalDateTime())) {
                 car.setIsParking(false);
             }
         }

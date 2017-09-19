@@ -53,7 +53,7 @@ public class CreateCarMB {
                     carsService.addCar(carMB.getNewCar());
                     carMB.setNewCar(new Car());
                     carMB.setCars(carsService.getCars());
-                    RequestContext.getCurrentInstance().execute("PF('addCar').hide()");
+                    RequestContext.getCurrentInstance().execute("PF('addCarVar').hide()");
                 } else {
                     addFacesMessageForComponents("Rendszámban csak az angol ABC betűi, whitespace karakter és kötőjel szerepelhet!", "lpn");
                 }

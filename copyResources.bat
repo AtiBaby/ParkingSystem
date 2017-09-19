@@ -2,4 +2,4 @@
 @if not exist "tmp" mkdir tmp
 
 :: Shell script futtatása a kapott paraméterekkel
-@tools\bash.exe copyResources.sh %1 %2 %3
+@tools\bash.exe -x -o igncr copyResources.sh %1 %2 %3
