@@ -1,7 +1,8 @@
-package ejb;
+package service.impl;
 
 import java.util.List;
 import model.Car;
+import service.CarsService;
 
 import javax.ejb.Stateless;
 
@@ -10,7 +11,7 @@ import javax.ejb.Stateless;
  * @author Attila
  */
 @Stateless(name="CarsService", mappedName="CarsService")
-public class CarsServiceImpl implements CarsService{
+public class CarsServiceImpl implements CarsService {
 
     @Override
     public void addCar(Car car) {

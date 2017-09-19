@@ -1,4 +1,4 @@
-package ejb;
+package service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import javax.ejb.Local;
 
 import javax.ejb.Stateless;
 import model.Car;
+import service.ParkingCarsService;
 
 /**
  *

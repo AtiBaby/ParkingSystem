@@ -9,7 +9,7 @@
 <ui:composition template="template.xhtml">
 
     <f:metadata>
-        <f:viewParam id="LPN" name="LPN" value="#{selectionBean.selectedCar.licensePlateNumber}"/>
+        <f:viewParam id="LPN" name="LPN" value="#{parkingBean.selectedCar.licensePlateNumber}"/>
         <f:viewAction action="#{parkingBean.onLoad}"/>
     </f:metadata>
 
@@ -25,25 +25,25 @@
                     </p:row>
                 </f:facet>
                 <h:outputText value="#{bundle['license.plate.number']}:"/>
-                <h:outputText value="#{selectionBean.selectedCar.licensePlateNumber}"/>
+                <h:outputText value="#{parkingBean.selectedCar.licensePlateNumber}"/>
                 <h:outputText value="#{bundle['brand']}:"/>
-                <h:outputText value="#{selectionBean.selectedCar.brand}"/>
+                <h:outputText value="#{parkingBean.selectedCar.brand}"/>
                 <h:outputText value="#{bundle['type']}:"/>
-                <h:outputText value="#{selectionBean.selectedCar.type}"/>
+                <h:outputText value="#{parkingBean.selectedCar.type}"/>
                 <h:outputText value="#{bundle['color']}:"/>
-                <h:outputText value="#{selectionBean.selectedCar.color}"/>
+                <h:outputText value="#{parkingBean.selectedCar.color}"/>
             </p:panelGrid>
-            <p:tabView rendered="#{selectionBean.selectedCar.isParking == false}" styleClass="topBottomMargin centered">
+            <p:tabView rendered="#{parkingBean.selectedCar.isParking == false}" styleClass="topBottomMargin centered">
                 <p:tab title="Parkoló 1">
                     <h:form>
                         <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
                             <h:outputText styleClass="output-text" value="#{bundle['beginning.parking']}:"/>
                             <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
-                                        value="#{selectionBean.startDate}"
+                                        value="#{parkingBean.startDate}"
                                         required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
                             <h:outputText styleClass="output-text" value="#{bundle['end.parking']}:"/>
                             <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
-                                        value="#{selectionBean.endDate}"
+                                        value="#{parkingBean.endDate}"
                                         required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
                         </h:panelGrid>
                         <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
@@ -54,10 +54,10 @@
                     <h:form>
                         <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
                             <h:outputText value="#{bundle['beginning.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.startDate}"
+                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.startDate}"
                                         required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
                             <h:outputText value="#{bundle['end.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.endDate}"
+                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.endDate}"
                                         required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
                         </h:panelGrid>
                         <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
@@ -68,10 +68,10 @@
                     <h:form>
                         <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
                             <h:outputText value="#{bundle['beginning.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.startDate}"
+                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.startDate}"
                                         required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
                             <h:outputText value="#{bundle['end.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{selectionBean.endDate}"
+                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.endDate}"
                                         required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
                         </h:panelGrid>
                         <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
@@ -80,7 +80,7 @@
                 </p:tab>
             </p:tabView>
             <p:panelGrid styleClass="topBottomMargin centered"
-                         rendered="#{selectionBean.selectedCar.isParking}">
+                         rendered="#{parkingBean.selectedCar.isParking}">
                 <p:row>
                     <p:column colspan="2">#{bundle['car.in.parking']}</p:column>
                 </p:row>
@@ -89,7 +89,7 @@
                         <h:outputText value="#{bundle['parking.place']}:"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{selectionBean.selectedCar.parkingPlace}"/>
+                        <h:outputText value="#{parkingBean.selectedCar.parkingPlace}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -97,7 +97,7 @@
                         <h:outputText value="#{bundle['beginning.parking']}:"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{selectionBean.selectedCar.formattedStartTime}"/>
+                        <h:outputText value="#{parkingBean.selectedCar.formattedStartTime}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -105,7 +105,7 @@
                         <h:outputText value="#{bundle['end.parking']}:"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{selectionBean.selectedCar.formattedEndTime}"/>
+                        <h:outputText value="#{parkingBean.selectedCar.formattedEndTime}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

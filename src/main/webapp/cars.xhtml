@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
     
     <ui:composition template="template.xhtml">
-        <ui:define name="title">Autók</ui:define>
+        <ui:define name="title">#{bundle['cars']}</ui:define>
         
         <ui:define name="body">
             <h:form>
@@ -18,7 +18,7 @@
                              selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}"
                              emptyMessage="#{bundle['no.car']}">
                     <f:facet name="header">
-                        Autók
+                        <h:outputText value="#{bundle['cars']}"/>
                     </f:facet>
                     <p:column headerText="#{bundle['license.plate.number']}">
                         <h:outputText value="#{car.licensePlateNumber}"/>
@@ -41,7 +41,7 @@
                                      onclick="PF('addCarVar').show();"/>
                     <p:commandButton actionListener="#{parkingBean.goParking}" ajax="true"
                                      value="#{bundle['parking']}" update="growl"/>
-                    <p:commandButton action="#{deleteCarBean.deleteCar}"
+                    <p:commandButton action="#{carBean.deleteCar}"
                                      value="#{bundle['delete.car']}" update="cars"/>
                 </div>
             </p:panel>
@@ -66,7 +66,7 @@
                     </p:panelGrid>
                     <div class="buttons">
                          <p:commandButton value="#{bundle['add']}" update="cars addPanel requiredMessage"
-                                          action="#{createCarBean.doCreate}"/>
+                                          action="#{carBean.createCar}"/>
                     </div>
                     </p:panel>
             </p:dialog>

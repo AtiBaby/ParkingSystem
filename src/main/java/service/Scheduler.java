@@ -1,6 +1,6 @@
-package ejb;
+package service;
 
-import managedbeans.CarMB;
+import managedbeans.CarMBean;
 import model.Car;
 
 import javax.annotation.Resource;
@@ -22,7 +22,7 @@ public class Scheduler {
     TimerService timerService;
 
     @Inject
-    private CarMB carMB;
+    private CarMBean carMB;
 
     /*Every 5 second it checks that parking time of one car is expired.*/
     @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)

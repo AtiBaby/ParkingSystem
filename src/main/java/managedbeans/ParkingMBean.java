@@ -1,35 +1,42 @@
 package managedbeans;
 
-import ejb.CarsService;
-import ejb.ParkingCarsService;
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import lombok.Getter;
+import lombok.Setter;
+import model.Car;
+import service.CarsService;
+import service.ParkingCarsService;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import model.Car;
+import java.io.IOException;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Attila
  */
 @ManagedBean(name="parkingBean")
-@RequestScoped
-public class ParkingMB {
-    
-    @ManagedProperty("#{selectionBean}")
-    private SelectionMB selectionMB;
+@ViewScoped
+@Getter
+@Setter
+public class ParkingMBean extends AbstractMBean {
+
+    private Car selectedCar = new Car();
+    private List<Car> parkingCars = new ArrayList();
+
+    private Date startDate;
+    private Date endDate;
     
     @ManagedProperty("#{carBean}")
-    private CarMB carMB;
+    private CarMBean carMB;
     
     @EJB
     private CarsService carsService;
@@ -52,25 +59,23 @@ public class ParkingMB {
     }
     
     public void onLoad(){
-        String LPN = selectionMB.getSelectedCar().getLicensePlateNumber();
-        selectionMB.setSelectedCar(carsService.getCarByLPN(LPN));
-        selectionMB.setParkingCars(parkingCarsService.getParkingCars());
+        String LPN = selectedCar.getLicensePlateNumber();
+        setSelectedCar(carsService.getCarByLPN(LPN));
+        setParkingCars(parkingCarsService.getParkingCars());
     }
     
     public void executeParking(String str){
         /*Az inputból date típust kapok vissza, amit át kell alakítani LocalDateTime típussá. Valamint ellenőrzőm azt, hogy
           a végidőpont nincs időben hamarabb, mint a kezdő időpont.*/
-        LocalDateTime startDatetime = (selectionMB.getStartDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime endDatetime = (selectionMB.getEndDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime startDatetime = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime endDatetime = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         if (getDuration(startDatetime, endDatetime) > 0){
-            Car newparkingCar = selectionMB.getSelectedCar();
-            newparkingCar.setIsParking(Boolean.TRUE);
-            newparkingCar.setParkingPlace(str);
-            newparkingCar.setStartTime(startDatetime);
-            newparkingCar.setEndTime(endDatetime);
-            parkingCarsService.addParkingCar(newparkingCar);
-            selectionMB.setSelectedCar(newparkingCar);
-            selectionMB.setParkingCars(parkingCarsService.getParkingCars());
+            selectedCar.setIsParking(Boolean.TRUE);
+            selectedCar.setParkingPlace(str);
+            selectedCar.setStartTime(startDatetime);
+            selectedCar.setEndTime(endDatetime);
+            parkingCarsService.addParkingCar(selectedCar);
+            setParkingCars(parkingCarsService.getParkingCars());
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                 "A parkolás vége nem lehet korábban, mint a parkolás kezdete!",null));
@@ -82,21 +87,5 @@ public class ParkingMB {
         Instant endInstant   =   end.toInstant(ZoneOffset.UTC);
         long duration=Duration.between(startInstant, endInstant).toNanos();
     return duration;
-    }
-
-    public SelectionMB getSelectionMB() {
-        return selectionMB;
-    }
-
-    public void setSelectionMB(SelectionMB selectionMB) {
-        this.selectionMB = selectionMB;
-    }
-
-    public CarMB getCarMB() {
-        return carMB;
-    }
-
-    public void setCarMB(CarMB carMB) {
-        this.carMB = carMB;
     }
 }
