@@ -5,12 +5,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view locale="#{languageMBean.locale}">
+<f:view contentType="text/html" locale="#{languageMBean.locale}">
 
     <h:head>
         <title>
             <ui:insert name="title"/>
         </title>
+        <ui:insert name="unique-css"/>
+        <ui:insert name="unique-js"/>
     </h:head>
 
     <h:body>
@@ -18,7 +20,7 @@
         <h:outputStylesheet name="style.css"/>
         <header>
             <h:form>
-                <p:panelGrid columns="3" styleClass="menuPanelGrid">
+                <p:panelGrid columns="3" styleClass="noBorder noBackground centered">
                     <p:graphicImage library="images" name="logo.png" style="width: 70%"/>
                     <p:commandLink action="#{languageMBean.changeLanguage('en')}">
                         <p:graphicImage name="images/EN.gif" style="width: 30px"/>

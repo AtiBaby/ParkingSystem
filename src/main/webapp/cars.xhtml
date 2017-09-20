@@ -5,16 +5,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    
-    <ui:composition template="template.xhtml">
-        <ui:define name="title">#{bundle['cars']}</ui:define>
-        
-        <ui:define name="body">
-            <h:form>
+
+<ui:composition template="template.xhtml">
+    <ui:define name="title">#{bundle['cars']}</ui:define>
+
+    <ui:define name="body">
+        <h:form>
             <p:panel id="cars" styleClass="carsPanel">
                 <p:growl id="growl"/>
                 <p:poll interval="3" update="cars"/>
-                <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single" 
+                <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single"
                              selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}"
                              emptyMessage="#{bundle['no.car']}">
                     <f:facet name="header">
@@ -45,14 +45,14 @@
                                      value="#{bundle['delete.car']}" update="cars"/>
                 </div>
             </p:panel>
-            
+
             <p:dialog modal="true" header="#{bundle['add.new.car']}" widgetVar="addCarVar">
-                    <p:messages id="requiredMessage"/>
-                    <p:panel id="addPanel">
+                <p:messages id="requiredMessage"/>
+                <p:panel id="addPanel">
                     <p:panelGrid columns="2" layout="grid">
                         <p:outputLabel value="#{bundle['license.plate.number']}:" styleClass="required-label"/>
                         <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
-                        
+
                         <p:outputLabel value="#{bundle['brand']}:" styleClass="required-label"/>
                         <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"/>
 
@@ -65,12 +65,12 @@
                                      value="#{carBean.newCar.color}"/>
                     </p:panelGrid>
                     <div class="buttons">
-                         <p:commandButton value="#{bundle['add']}" update="cars addPanel requiredMessage"
-                                          action="#{carBean.createCar}"/>
+                        <p:commandButton value="#{bundle['add']}" update="cars addPanel requiredMessage"
+                                         action="#{carBean.createCar}"/>
                     </div>
-                    </p:panel>
+                </p:panel>
             </p:dialog>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>

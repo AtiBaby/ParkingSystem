@@ -46,6 +46,10 @@ body {
     width: 100%;
 }
 
+.coordinate-input-text {
+    width: 40%;
+}
+
 .centered{
     margin: 0 auto;
 }
@@ -66,14 +70,14 @@ body {
     font-weight: bold;
 }
 
-.menuPanelGrid tr, .menuPanelGrid td {
+.noBorder tr, .noBorder td {
     border: none !important;
 }
 
-.menuPanelGrid tr, .menuPanelGrid td {
+.noBackground tr, .noBackground td {
     background: transparent;
 }
 
-.menuPanelGrid {
+.centered {
     margin: 0 auto;
 }

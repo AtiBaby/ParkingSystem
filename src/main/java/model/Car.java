@@ -3,6 +3,7 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Car {
+public class Car implements Serializable {
 
     private String coutry;
     private String licensePlateNumber;
