@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,9 @@ public class CarPark implements Serializable {
     @Column(precision = 4)
     private Integer size;
 
-    @Column(precision = 8, scale = 6)
-    private Double xcoordinate;
+    @Column(precision = 20, scale = 18)
+    private BigDecimal xcoordinate;
 
-    @Column(precision = 8, scale = 6)
-    private Double ycoordinate;
+    @Column(precision = 20, scale = 18)
+    private BigDecimal ycoordinate;
 }

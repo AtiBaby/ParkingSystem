@@ -4,13 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Address;
 import model.CarPark;
+import model.utils.CarParkType;
 import service.CarParkService;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +26,9 @@ import java.util.List;
 public class CarParkMBean extends AbstractMBean {
 
     private List<CarPark> carParks;
-    private CarPark selectedCarPark = new CarPark();
+    private CarPark selectedCarPark;
     private PageViewType pageViewType;
+    private List<CarParkType> carParkTypes;
 
     protected enum PageViewType {
         VIEW, NEW, MODIFY;
@@ -40,6 +44,11 @@ public class CarParkMBean extends AbstractMBean {
     public void init(){
         carParks = carParkService.getAllCarPark();
         pageViewType = PageViewType.VIEW;
+        carParkTypes = new ArrayList<CarParkType>(){{
+            add(CarParkType.PARKING_HOUSE);
+            add(CarParkType.OUTDOOR_CAR_PARK);
+            add(CarParkType.UNDERGROUND_GARAGE);
+        }};
     }
 
     public void showNewEditPanel() {
@@ -58,5 +67,9 @@ public class CarParkMBean extends AbstractMBean {
 
     public boolean editPanelRendered() {
         return PageViewType.NEW.equals(pageViewType) || PageViewType.MODIFY.equals(pageViewType);
+    }
+
+    public void cancelEdit() {
+        pageViewType = PageViewType.VIEW;
     }
 }

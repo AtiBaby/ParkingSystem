@@ -29,22 +29,13 @@ public class MapMBean {
         carsOnMap = new HashSet<>();
         simpleModel = new DefaultMapModel();
 
-        //Shared coordinates
-//        LatLng coord1 = new LatLng(36.879466, 30.667648);
-//        LatLng coord2 = new LatLng(36.883707, 30.689216);
-//        LatLng coord3 = new LatLng(36.879703, 30.706707);
-//        LatLng coord4 = new LatLng(36.885233, 30.702323);
-//
-//        //Basic marker
-//        simpleModel.addOverlay(new Marker(coord1, "Konyaalti"));
-//        simpleModel.addOverlay(new Marker(coord2, "Ataturk Parki"));
-//        simpleModel.addOverlay(new Marker(coord3, "Karaalioglu Parki"));
-//        simpleModel.addOverlay(new Marker(coord4, "Kaleici"));
+        LatLng coord1 = new LatLng(47.532089,21.624479);
+        simpleModel.addOverlay(new Marker(coord1, "Nagytemplomi parkoló", "", "http://localhost:8080/parkingSystem/javax.faces.resource/melygarazs.png.xhtml?ln=images"));
     }
 
     public void addCarPark(CarPark carPark) {
         if (carPark.getXcoordinate() != null & carPark.getYcoordinate() != null) {
-            LatLng coord = new LatLng(carPark.getXcoordinate(), carPark.getYcoordinate());
+            LatLng coord = new LatLng(carPark.getXcoordinate().doubleValue(), carPark.getYcoordinate().doubleValue());
             simpleModel.addOverlay(new Marker(coord, carPark.getName(),"", "http://localhost:8080/parkingSystem/javax.faces.resource/melygarazs.png.xhtml?ln=images"));
         }
     }
