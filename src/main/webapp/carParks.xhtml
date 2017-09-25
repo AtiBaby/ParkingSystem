@@ -16,11 +16,29 @@
     </ui:define>
 
     <ui:define name="body">
-        <h:form>
+        <h:form id="carParkForm">
             <p:panel id="carParks" styleClass="carParksPanel">
                 <p:growl id="growl"/>
-                <p:dataTable value="#{carParkMBean.carParks}" var="carPark"
-                             emptyMessage="#{bundle['no.car.park']}">
+                <p:toolbar id="buttons">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="#{bundle['add.new.car.park']}"
+                                         update="carParks" disabled="#{carParkMBean.newButtonDisabled()}"
+                                         action="#{carParkMBean.showNewEditPanel}" onclick="clickOnMapPossible()"/>
+                        <p:commandButton value="#{bundle['delete.button']}"
+                                         update="carParks" disabled="#{carParkMBean.deleteButtonDisabled()}"
+                                         action="#{carParkMBean.deleteCarPark}"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:dataTable id="carParks_dataTable"
+                             value="#{carParkMBean.carParks}" var="carPark"
+                             selectionMode="single" selection="#{carParkMBean.selectedCarPark}"
+                             emptyMessage="#{bundle['no.car.park']}" rowKey="#{carPark.id}"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="({currentPage} / {totalPages})"
+                             paginator="true" rows="10"
+                             rowsPerPageTemplate="10,20"
+                             disabledSelection="#{carParkMBean.editPanelRendered()}"
+                             paginatorPosition="bottom" lazy="false">
                     <f:facet name="header">
                         <h:outputText value="#{bundle['car.parks']}"/>
                     </f:facet>
@@ -28,115 +46,133 @@
                         <h:outputText value="#{carPark.name}"/>
                     </p:column>
                     <p:column headerText="#{bundle['type']}">
-                        <h:outputText value="#{carPark.type}"/>
+                        <h:outputText value="#{bundle['enum.car.park.'.concat(carPark.type)]}"/>
                     </p:column>
                     <p:column headerText="#{bundle['address']}">
                         <h:outputText value="#{carPark.address}"/>
                     </p:column>
                     <p:column headerText="#{bundle['parkingFee']}">
-                        <h:outputText value="#{carPark.parkingFee}"/>
+                        <h:outputText value="#{carPark.parkingFee} HUF \ #{bundle['hour']}"/>
                     </p:column>
                     <p:column headerText="#{bundle['size']}">
-                        <h:outputText value="#{carPark.size} \ #{bundle['hour']}"/>
+                        <h:outputText value="#{carPark.size}"/>
                     </p:column>
                     <p:column headerText="#{bundle['gps.coordinates']}">
                         <h:outputText value="#{carPark.xcoordinate}, #{carPark.ycoordinate}"/>
                     </p:column>
                 </p:dataTable>
-                <div class="buttons">
-                    <p:commandButton value="#{bundle['add.new.car.park']}"
-                                     update="carParks" rendered="#{!carParkMBean.editPanelRendered()}"
-                                     action="#{carParkMBean.showNewEditPanel}" onclick="clickOnMapPossible()"/>
-                </div>
 
                 <p:panel id="editCarParkPanel" rendered="#{carParkMBean.editPanelRendered()}"
                          styleClass="noBorder noBackground">
-                    <p:panelGrid columns="4" layout="grid">
-
-                        <p:outputLabel value="#{bundle['car.park.name']}:" styleClass="required-label"/>
-                        <p:inputText id="name_editPanel" styleClass="input-text"
-                                     value="#{carParkMBean.selectedCarPark.name}"/>
-
-                        <p:outputLabel value="#{bundle['type']}:" styleClass="required-label"/>
-                        <p:selectOneMenu id="type_editPanel" styleClass="input-text"
-                                     value="#{carParkMBean.selectedCarPark.type}">
-                            <f:selectItem itemLabel="Kérem válasszon!" itemValue="#{null}"/>
-                            <f:selectItems value="#{carParkMBean.carParkTypes}" var="type"
-                                           itemLabel="#{bundle['enum.car.park.'.concat(type)]}" itemValue="#{type}"/>
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="#{bundle['parkingFee']}:" styleClass="required-label"/>
-                        <p:inputText id="parkingFee_editPanel" styleClass="input-text"
-                                     maxlength="4" value="#{carParkMBean.selectedCarPark.parkingFee}">
-                            <f:convertNumber pattern="#,###" locale="hu"/>
-                        </p:inputText>
-
-                        <p:outputLabel value="#{bundle['size']}:" styleClass="required-label"/>
-                        <p:inputText id="size_editPanel" styleClass="input-text"
-                                     maxlength="4" value="#{carParkMBean.selectedCarPark.size}">
-                            <f:convertNumber pattern="#,###" locale="hu"/>
-                        </p:inputText>
-
-                        <p:outputLabel value="#{bundle['gps.coordinates']}:" styleClass="required-label"/>
-                        <p:outputPanel>
-                            <p:inputText id="xcoordinate_editPanel" styleClass="coordinate-input-text"
-                                         value="#{carParkMBean.selectedCarPark.xcoordinate}">
-                                <p:ajax event="change" listener="#{carParkMBean.xcoordListener}"/>
-                            </p:inputText>
-                            <p:spacer width="5"/>
-                            <p:inputText id="ycoordinate_editPanel" styleClass="coordinate-input-text"
-                                         value="#{carParkMBean.selectedCarPark.ycoordinate}">
-                                <p:ajax event="change" listener="#{carParkMBean.ycoordListener}"/>
-                            </p:inputText>
-                        </p:outputPanel>
-
-                        <p:outputLabel value="#{bundle['country']}:" styleClass="required-label"/>
-                        <p:inputText id="country_editPanel" styleClass="input-text"
-                                     value="#{carParkMBean.selectedCarPark.address.country}"/>
-
-                        <p:outputLabel value="#{bundle['zip']}:" styleClass="required-label"/>
-                        <p:inputText id="zip_editPanel" styleClass="input-text"
-                                       maxlength="4" value="#{carParkMBean.selectedCarPark.address.zip}">
-                            <f:convertNumber pattern="#,###" locale="hu"/>
-                        </p:inputText>
-
-                        <p:outputLabel value="#{bundle['city']}:" styleClass="required-label"/>
-                        <p:inputText id="city_editPanel" styleClass="input-text"
-                                     value="#{carParkMBean.selectedCarPark.address.city}"/>
-
-                        <p:outputLabel value="#{bundle['street']}:" styleClass="required-label"/>
-                        <p:inputText id="street_editPanel" styleClass="input-text"
-                                     value="#{carParkMBean.selectedCarPark.address.street}"/>
-
-                        <p:outputLabel value="#{bundle['strNumber']}:" styleClass="required-label"/>
-                        <p:inputText id="strNumber_editPanel" styleClass="input-text"
-                                       maxlength="3" value="#{carParkMBean.selectedCarPark.address.strNumber}">
-                            <f:convertNumber pattern="###" locale="hu"/>
-                        </p:inputText>
-
-                    </p:panelGrid>
-                    <div class="buttons">
+                    <f:facet name="header">
                         <p:commandButton value="#{bundle['add']}" update="carParks"
                                          action="#{carParkMBean.createCarPark}" onclick="clickOnMapNoPossible()"/>
                         <p:commandButton value="#{bundle['cancel']}" update="carParks"
                                          action="#{carParkMBean.cancelEdit()}" onclick="clickOnMapNoPossible()"/>
-                    </div>
+                    </f:facet>
+                    <p:panelGrid columns="3" layout="grid">
+                        <p:outputLabel value="#{bundle['car.park.name']}:" styleClass="required-label"/>
+                        <p:inputText id="name_editPanel" styleClass="input-text"
+                                     value="#{carParkMBean.editedCarPark.name}"/>
+                        <p:message for="name_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['type']}:" styleClass="required-label"/>
+                        <p:selectOneMenu id="type_editPanel" styleClass="input-text"
+                                         value="#{carParkMBean.editedCarPark.type}">
+                            <f:selectItem itemLabel="Kérem válasszon!" itemValue="#{null}"/>
+                            <f:selectItems value="#{carParkMBean.carParkTypes}" var="type"
+                                           itemLabel="#{bundle['enum.car.park.'.concat(type)]}" itemValue="#{type}"/>
+                        </p:selectOneMenu>
+                        <p:message for="type_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['parkingFee']}:" styleClass="required-label"/>
+                        <p:inputText id="parkingFee_editPanel" styleClass="input-text"
+                                     maxlength="4" value="#{carParkMBean.editedCarPark.parkingFee}">
+                            <f:convertNumber pattern="#,###" locale="hu"/>
+                        </p:inputText>
+                        <p:message for="parkingFee_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['size']}:" styleClass="required-label"/>
+                        <p:inputText id="size_editPanel" styleClass="input-text"
+                                     maxlength="4" value="#{carParkMBean.editedCarPark.size}">
+                            <f:convertNumber pattern="#,###" locale="hu"/>
+                        </p:inputText>
+                        <p:message for="size_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['gps.coordinates']}:" styleClass="required-label"/>
+                        <p:outputPanel>
+                            <p:inputText id="xcoordinate_editPanel" styleClass="coordinate-input-text"
+                                         value="#{carParkMBean.editedCarPark.xcoordinate}"/>
+                            <p:spacer width="5"/>
+                            <p:inputText id="ycoordinate_editPanel" styleClass="coordinate-input-text"
+                                         value="#{carParkMBean.editedCarPark.ycoordinate}"/>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:message for="xcoordinate_editPanel"/>
+                            <p:message for="ycoordinate_editPanel"/>
+                        </p:outputPanel>
+
+                        <p:outputLabel value="#{bundle['country']}:" />
+                        <p:inputText id="country_editPanel" styleClass="input-text"
+                                     disabled="true"
+                                     value="#{carParkMBean.editedCarPark.address.country}"/>
+                        <p:message for="country_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['zip']}:" styleClass="required-label"/>
+                        <p:inputText id="zip_editPanel" styleClass="input-text"
+                                     maxlength="4" value="#{carParkMBean.editedCarPark.address.zip}">
+                            <f:convertNumber pattern="#,###" locale="hu"/>
+                        </p:inputText>
+                        <p:message for="zip_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['city']}:"/>
+                        <p:inputText id="city_editPanel" styleClass="input-text"
+                                     disabled="true"
+                                     value="#{carParkMBean.editedCarPark.address.city}"/>
+                        <p:message for="city_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['street']}:" styleClass="required-label"/>
+                        <p:inputText id="street_editPanel" styleClass="input-text"
+                                     value="#{carParkMBean.editedCarPark.address.street}"/>
+                        <p:message for="street_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['strNumber']}:" styleClass="required-label"/>
+                        <p:inputText id="strNumber_editPanel" styleClass="input-text"
+                                     maxlength="3" value="#{carParkMBean.editedCarPark.address.strNumber}">
+                            <f:convertNumber pattern="###" locale="hu"/>
+                        </p:inputText>
+                        <p:message for="strNumber_editPanel"/>
+
+                    </p:panelGrid>
                 </p:panel>
+
+                <p:spacer width="5"/>
+
+                <p:gmap id="gmap" center="47.532089,21.624479" model="#{mapMBean.simpleModel}"
+                        onPointClick="handlePointClick(event);" zoom="14" type="HYBRID"
+                        style="width:1000px;height:750px" widgetVar="map" styleClass="centered">
+
+                    <p:ajax event="overlaySelect" listener="#{mapMBean.onMarkerSelect}"/>
+
+                    <p:gmapInfoWindow id="infoWindow">
+                        <p:outputPanel style="text-align: center; display: block; margin: auto">
+                            <p:panelGrid columns="2" styleClass="noBorder">
+                                <h:outputText value="#{bundle['car.park.name']}:"/>
+                                <h:outputText value="#{mapMBean.selectedCarPark.name}"/>
+                                <h:outputText value="#{bundle['type']}:"/>
+                                <h:outputText
+                                        value="#{bundle['enum.car.park.'.concat(mapMBean.selectedCarPark.type)]}"/>
+                                <h:outputText value="#{bundle['parkingFee']}:"/>
+                                <h:outputText value="#{mapMBean.selectedCarPark.parkingFee} HUF / #{bundle['hour']}"/>
+                                <h:outputText value="#{bundle['size']}:"/>
+                                <h:outputText value="#{mapMBean.selectedCarPark.size}"/>
+                                <h:outputText value="#{bundle['address']}:"/>
+                                <h:outputText value="#{mapMBean.selectedCarPark.address}"/>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:gmapInfoWindow>
+                </p:gmap>
             </p:panel>
-            <p:gmap id="gmap" center="47.532089,21.624479" model="#{mapMBean.simpleModel}"
-                    onPointClick="handlePointClick(event);" zoom="14" type="HYBRID"
-                    style="width:600px;height:400px" widgetVar="map">
-
-                <p:ajax event="overlaySelect" listener="#{mapMBean.onMarkerSelect}"/>
-
-                <p:gmapInfoWindow id="infoWindow">
-                    <p:outputPanel style="text-align: center; display: block; margin: auto">
-
-                        <h:outputText value="#{infoWindowView.marker.title}"/>
-
-                    </p:outputPanel>
-                </p:gmapInfoWindow>
-            </p:gmap>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -35,6 +35,19 @@
 
         <section id="main-content" class="main-content">
             <ui:insert name="body"/>
+
+            <p:confirmDialog id="deleteConfirmDialog"
+                             message="#{bundle['delete.confirm.message']}"
+                             global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton id="#{buttonId}ConfirmYes"
+                                 value="Igen" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton id="#{buttonId}ConfirmNo"
+                                 value="Nem" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+
+            <ui:insert name="customDialogs"/>
         </section>
 
         <footer>

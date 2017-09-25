@@ -33,52 +33,23 @@
                 <h:outputText value="#{bundle['color']}:"/>
                 <h:outputText value="#{parkingBean.selectedCar.color}"/>
             </p:panelGrid>
-            <p:tabView rendered="#{parkingBean.selectedCar.isParking == false}" styleClass="topBottomMargin centered">
-                <p:tab title="Parkoló 1">
-                    <h:form>
-                        <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
-                            <h:outputText styleClass="output-text" value="#{bundle['beginning.parking']}:"/>
-                            <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
-                                        value="#{parkingBean.startDate}"
-                                        required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
-                            <h:outputText styleClass="output-text" value="#{bundle['end.parking']}:"/>
-                            <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
-                                        value="#{parkingBean.endDate}"
-                                        required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
-                        </h:panelGrid>
-                        <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
-                                         actionListener="#{parkingBean.executeParking('Parkoló 1')}"/>
-                    </h:form>
-                </p:tab>
-                <p:tab title="Parkoló 2">
-                    <h:form>
-                        <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
-                            <h:outputText value="#{bundle['beginning.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.startDate}"
-                                        required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
-                            <h:outputText value="#{bundle['end.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.endDate}"
-                                        required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
-                        </h:panelGrid>
-                        <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
-                                         actionListener="#{parkingBean.executeParking('Parkoló 2')}"/>
-                    </h:form>
-                </p:tab>
-                <p:tab title="Parkoló 3">
-                    <h:form>
-                        <h:panelGrid styleClass="timePanelGrid" columns="2" cellpadding="10">
-                            <h:outputText value="#{bundle['beginning.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.startDate}"
-                                        required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
-                            <h:outputText value="#{bundle['end.parking']}:"/>
-                            <p:calendar pattern="yyyy.MM.dd. HH:mm" value="#{parkingBean.endDate}"
-                                        required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
-                        </h:panelGrid>
-                        <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
-                                         actionListener="#{parkingBean.executeParking('Parkoló 3')}"/>
-                    </h:form>
-                </p:tab>
-            </p:tabView>
+            <h:form>
+                <p:panel rendered="#{parkingBean.selectedCar.isParking == false}"
+                         styleClass="topBottomMargin centered">
+                    <h:panelGrid styleClass="timePanelGrid" columns="4" cellpadding="10">
+                        <h:outputText styleClass="output-text" value="#{bundle['beginning.parking']}:"/>
+                        <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
+                                    value="#{parkingBean.startDate}"
+                                    required="true" requiredMessage="#{bundle['beginning.parking.time.required']}"/>
+                        <h:outputText styleClass="output-text" value="#{bundle['end.parking']}:"/>
+                        <p:calendar styleClass="output-text" pattern="yyyy.MM.dd. HH:mm"
+                                    value="#{parkingBean.endDate}"
+                                    required="true" requiredMessage="#{bundle['end.parking.time.required']}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="#{bundle['save']}" update="selectedCarPanel growl"
+                                     actionListener="#{parkingBean.executeParking()}"/>
+                </p:panel>
+            </h:form>
             <p:panelGrid styleClass="topBottomMargin centered"
                          rendered="#{parkingBean.selectedCar.isParking}">
                 <p:row>

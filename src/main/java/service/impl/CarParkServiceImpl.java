@@ -14,6 +14,7 @@ public class CarParkServiceImpl implements CarParkService {
 
     @Override
     public void addCarPark(CarPark carPark) {
+        carPark.setId(Long.valueOf(CarPark.carParks.size()));
         CarPark.carParks.add(carPark);
     }
 

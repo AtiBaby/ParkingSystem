@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,7 @@ public class CarParkMBean extends AbstractMBean {
 
     private List<CarPark> carParks;
     private CarPark selectedCarPark;
+    private CarPark editedCarPark;
     private PageViewType pageViewType;
     private List<CarParkType> carParkTypes;
 
@@ -53,16 +53,23 @@ public class CarParkMBean extends AbstractMBean {
 
     public void showNewEditPanel() {
         pageViewType = PageViewType.NEW;
-        selectedCarPark = new CarPark();
-        selectedCarPark.setAddress(new Address());
+        editedCarPark = new CarPark();
+        editedCarPark.setAddress(new Address());
+        editedCarPark.getAddress().setCity("Debrecen");
+        editedCarPark.getAddress().setCountry("Magyarország");
+    }
+
+    public void showModifyEditPanel() {
+        pageViewType = PageViewType.MODIFY;
+        editedCarPark = selectedCarPark;
     }
 
     public void createCarPark() {
-        carParkService.addCarPark(selectedCarPark);
-        carParks =carParkService.getAllCarPark();
+        carParkService.addCarPark(editedCarPark);
+        carParks = carParkService.getAllCarPark();
         pageViewType = PageViewType.VIEW;
-        mapMBean.addCarPark(selectedCarPark);
-        selectedCarPark = null;
+        mapMBean.addCarPark(editedCarPark);
+        editedCarPark = null;
     }
 
     public boolean editPanelRendered() {
@@ -71,5 +78,20 @@ public class CarParkMBean extends AbstractMBean {
 
     public void cancelEdit() {
         pageViewType = PageViewType.VIEW;
+        editedCarPark = null;
+    }
+
+    public boolean newButtonDisabled() {
+        if (PageViewType.VIEW.equals(pageViewType)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteButtonDisabled() {
+        if (PageViewType.VIEW.equals(pageViewType) && selectedCarPark != null) {
+            return false;
+        }
+        return true;
     }
 }

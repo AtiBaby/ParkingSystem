@@ -2,6 +2,7 @@ package model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.model.SelectableDataModel;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;

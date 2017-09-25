@@ -64,14 +64,14 @@ public class ParkingMBean extends AbstractMBean {
         setParkingCars(parkingCarsService.getParkingCars());
     }
 
-    public void executeParking(String str) {
+    public void executeParking() {
         /*Az inputból date típust kapok vissza, amit át kell alakítani LocalDateTime típussá. Valamint ellenőrzőm azt, hogy
           a végidőpont nincs időben hamarabb, mint a kezdő időpont.*/
         LocalDateTime startDatetime = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime endDatetime = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         if (getDuration(startDatetime, endDatetime) > 0) {
             selectedCar.setIsParking(Boolean.TRUE);
-            selectedCar.setParkingPlace(str);
+            selectedCar.setParkingPlace(null);
             selectedCar.setStartTime(startDatetime);
             selectedCar.setEndTime(endDatetime);
             parkingCarsService.addParkingCar(selectedCar);
