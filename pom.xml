@@ -89,6 +89,27 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.2.Final</version>
             </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>org.liquibase</groupId>-->
+                <!--<artifactId>liquibase-maven-plugin</artifactId>-->
+                <!--<version>3.5.3</version>-->
+                <!--<configuration>-->
+                    <!--<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
+                    <!--<driver></driver>-->
+                    <!--<url></url>-->
+                    <!--<username></username>-->
+                    <!--<password></password>-->
+                    <!--<changeLogFile>${project.basedir}/src/main/resources/META-INF/liquibase/master.xml</changeLogFile>-->
+                <!--</configuration>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>com.oracle</groupId>-->
+                        <!--<artifactId>ojdbc7</artifactId>-->
+                        <!--<version></version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

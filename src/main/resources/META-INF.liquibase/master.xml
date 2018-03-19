@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   logicalFilePath="liquibase/master.xml"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="valami.sql" author="holhosa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ANY_ALT_ATTRIB"/>
+            </not>
+        </preConditions>
+        <sqlFile relativeToChangelogFile="true" path="folder/valami.sql"/>
+        <comment></comment>
+    </changeSet>
+
+</databaseChangeLog>

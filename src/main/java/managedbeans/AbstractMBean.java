@@ -18,6 +18,24 @@ import java.util.Set;
  */
 public class AbstractMBean implements Serializable {
 
+    protected enum PageViewType {
+        VIEW, NEW, MODIFY;
+    }
+
+    protected PageViewType pageViewType;
+
+    public void showNewEditPanel() {
+        pageViewType = PageViewType.NEW;
+    }
+
+    public void showModifyEditPanel() {
+        pageViewType = PageViewType.MODIFY;
+    }
+
+    public boolean editPanelRendered() {
+        return PageViewType.NEW.equals(pageViewType) || PageViewType.MODIFY.equals(pageViewType);
+    }
+
     protected void addFacesMessageForComponents(String message, String... componentNames) {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
         FacesContext facesContext = FacesContext.getCurrentInstance();

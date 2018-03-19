@@ -59,6 +59,14 @@ public class ParkingMBean extends AbstractMBean {
     }
 
     public void onLoad() {
+        if (selectedCar == null) {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            try {
+                ec.redirect(ec.getRequestContextPath() + "/cars.xhtml");
+            } catch (IOException e) {
+                System.out.println("Bad redirect at onLoad method (in ParkingMBean).");
+            }
+        }
         String LPN = selectedCar.getLicensePlateNumber();
         setSelectedCar(carsService.getCarByLPN(LPN));
         setParkingCars(parkingCarsService.getParkingCars());

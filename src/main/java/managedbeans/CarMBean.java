@@ -1,5 +1,10 @@
 package managedbeans;
 
+import model.Address;
+import model.CarPark;
+import model.utils.Nation;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import service.CarsService;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,34 +18,53 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author Attila
  */
-@ManagedBean(name="carBean")
+@ManagedBean(name = "carBean")
 @ViewScoped
 @Getter
 @Setter
 public class CarMBean extends AbstractMBean {
-    
-    private Car newCar = new Car();
+
+    private Car newCar;
     private Car selectedCar = new Car();
-    
-    private List<Car> cars = new ArrayList<Car>();
+
+    private List<Car> cars = new ArrayList<>();
+    private Nation[] allNation = Nation.values();
+    private ApplicationContext context = new ClassPathXmlApplicationContext("resourcebundles.xml");
 
     @EJB
     private CarsService carsService;
-    
+
+    @Inject
+    private LanguageMBean languageMBean;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         cars = carsService.getCars();
+        pageViewType = PageViewType.VIEW;
     }
 
-    public void createCar(){
-        if(requiredFieldsNotEmpty(newCar)) {
+    @Override
+    public void showNewEditPanel() {
+        super.showNewEditPanel();
+        newCar = new Car();
+        newCar.setNation(Nation.HUNGARY);
+    }
+
+    public void cancelEdit() {
+        pageViewType = PageViewType.VIEW;
+        newCar = null;
+    }
+
+    public void createCar() {
+        if (requiredFieldsNotEmpty(newCar)) {
             Boolean containIt = false;
             for (Car car : cars) {
                 if (newCar.getLicensePlateNumber().equals(car.getLicensePlateNumber())) {
@@ -48,10 +72,8 @@ public class CarMBean extends AbstractMBean {
                 }
             }
             if (containIt) {
-                addFacesMessageForComponents("Ez a rendszám már szerepel a rendszerben!", "lpn");
+                addFacesMessageForComponents(context.getMessage("lpn.in.system", null, languageMBean.getLocale()), "lpn");
             } else {
-            /* Extra: Rendszám formátumának ellenőrzése. Csak angol ABC betűi, whitespace és kötőjel lehetnek benne.
-             Ha valid, akkor az autó hozzáadása sikeresen megtörténik.*/
                 String carLPN = newCar.getLicensePlateNumber().toUpperCase();
                 if (validLPN(carLPN)) {
                     newCar.setLicensePlateNumber(carLPN);
@@ -64,41 +86,44 @@ public class CarMBean extends AbstractMBean {
                 }
             }
         }
+
+        pageViewType = PageViewType.VIEW;
     }
 
     private boolean requiredFieldsNotEmpty(Car newCar) {
         boolean notEmpty = true;
         if (newCar.getLicensePlateNumber() == null || StringUtils.isEmpty(newCar.getLicensePlateNumber())) {
-            addFacesMessageForComponents("Rendszám megadása kötelező!", "requiredMessage");
+            addFacesMessageForComponents(context.getMessage("lpn.in.system", null, languageMBean.getLocale()), "requiredMessage");
             notEmpty = false;
         }
         if (newCar.getBrand() == null || StringUtils.isEmpty(newCar.getBrand())) {
-            addFacesMessageForComponents("Autó márka megadása kötelező!", "requiredMessage");
+            addFacesMessageForComponents(context.getMessage("brand.in.system", null, languageMBean.getLocale()), "requiredMessage");
             notEmpty = false;
         }
         if (newCar.getType() == null || StringUtils.isEmpty(newCar.getType())) {
-            addFacesMessageForComponents("Autó típusának megadása kötelező!", "requiredMessage");
+            addFacesMessageForComponents(context.getMessage("car.type.in.system", null, languageMBean.getLocale()), "requiredMessage");
             notEmpty = false;
         }
         if (newCar.getColor() == null || StringUtils.isEmpty(newCar.getColor())) {
-            addFacesMessageForComponents("Autó színének megadása kötelező!", "requiredMessage");
+            addFacesMessageForComponents(context.getMessage("color.in.system", null, languageMBean.getLocale()), "requiredMessage");
             notEmpty = false;
         }
         return notEmpty;
     }
 
-    private boolean validLPN(String LPN){
-        return LPN.matches("[A-Z0-9\\s-]*");
+    private boolean validLPN(String LPN) {
+        return LPN.matches("[A-Z]{3}-[0-9]{3}");
     }
 
-    public void deleteCar(){
-        if (selectedCar == null){
+    public void deleteCar() {
+        if (selectedCar == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Törléshez válassz ki egy autót!",null));
-        } else if (selectedCar.getIsParking()){
+                    context.getMessage("select.car.to.delete", null, languageMBean.getLocale()), null));
+        } else if (selectedCar.getIsParking()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Az " + selectedCar.getLicensePlateNumber() + " rendszámú autó egy parkolóban van, "
-                            + "így nem lehet törölni!",null));
+                    context.getMessage("delete.car.inpossible.prefix", null, languageMBean.getLocale())
+                            + selectedCar.getLicensePlateNumber() +
+                            context.getMessage("delete.car.inpossible.postfix", null, languageMBean.getLocale()), null));
         } else {
             carsService.deleteCar(selectedCar);
             setCars(carsService.getCars());

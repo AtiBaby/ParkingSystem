@@ -4,16 +4,16 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="template.xhtml">
     <ui:define name="title">#{bundle['cars']}</ui:define>
 
     <ui:define name="body">
-        <h:form>
+        <h:form id="carForm">
             <p:panel id="cars" styleClass="carsPanel">
                 <p:growl id="growl"/>
-                <p:poll interval="3" update="cars"/>
                 <p:dataTable value="#{carBean.cars}" var="car" selectionMode="single"
                              selection="#{carBean.selectedCar}" rowKey="#{car.licensePlateNumber}"
                              emptyMessage="#{bundle['no.car']}">
@@ -36,41 +36,65 @@
                         <h:outputText value="#{car.isParking ? bundle['yes'] : bundle['no']}"/>
                     </p:column>
                 </p:dataTable>
-                <div class="buttons">
-                    <p:commandButton value="#{bundle['add.new.car']}" type="button"
-                                     onclick="PF('addCarVar').show();"/>
+
+                <p:outputPanel styleClass="buttons" rendered="#{!carBean.editPanelRendered()}">
+                    <p:commandButton value="#{bundle['add.new.car']}" update="cars"
+                                     actionListener="#{carBean.showNewEditPanel}"/>
                     <p:commandButton actionListener="#{parkingBean.goParking}" ajax="true"
                                      value="#{bundle['parking']}" update="growl"/>
                     <p:commandButton action="#{carBean.deleteCar}"
                                      value="#{bundle['delete.car']}" update="cars"/>
                     <p:button value="#{bundle['car.parks']}" outcome="carParks"/>
-                </div>
-            </p:panel>
+                </p:outputPanel>
 
-            <p:dialog modal="true" header="#{bundle['add.new.car']}" widgetVar="addCarVar">
-                <p:messages id="requiredMessage"/>
-                <p:panel id="addPanel">
-                    <p:panelGrid columns="2" layout="grid">
-                        <p:outputLabel value="#{bundle['license.plate.number']}:" styleClass="required-label"/>
-                        <p:inputText id="lpn" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
+                <p:panel id="editCarParkPanel" rendered="#{carBean.editPanelRendered()}"
+                         styleClass="noBorder noBackground" style="margin-top: 20px">
+                    <f:facet name="header">
+                        <p:outputLabel value="#{bundle['add.new.car']}"/>
+                    </f:facet>
+
+                    <p:panelGrid columns="6" layout="grid" styleClass="noBorder noBackground">
 
                         <p:outputLabel value="#{bundle['brand']}:" styleClass="required-label"/>
-                        <p:inputText id="brand" styleClass="input-text" value="#{carBean.newCar.brand}"/>
+                        <p:inputText id="brand_editPanel" styleClass="input-text" value="#{carBean.newCar.brand}"/>
+                        <p:message for="brand_editPanel"/>
 
                         <p:outputLabel value="#{bundle['type']}:" styleClass="required-label"/>
-                        <p:inputText id="type" styleClass="input-text"
+                        <p:inputText id="type_editPanel" styleClass="input-text"
                                      value="#{carBean.newCar.type}"/>
+                        <p:message for="type_editPanel"/>
 
                         <p:outputLabel value="#{bundle['color']}:" styleClass="required-label"/>
-                        <p:inputText id="color" styleClass="input-text"
+                        <p:inputText id="color_editPanel" styleClass="input-text"
                                      value="#{carBean.newCar.color}"/>
+                        <p:message for="color_editPanel"/>
+
+                        <p:outputLabel value="#{bundle['lpn.nation']}:" styleClass="required-label"/>
+                        <p:outputPanel id="nationAndFlag">
+                            <p:selectOneMenu id="nationSelect_editPanel" value="#{carBean.newCar.nation}">
+                                <f:selectItems value="#{carBean.allNation}" var="nation"
+                                               itemLabel="#{nation.name}" itemValue="#{nation}"
+                                               pt:data-icon="flag flag-#{country.isoCode}"/>
+                                <p:ajax event="change" process="nationSelect_editPanel"
+                                        update="carForm:nationFlag"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="5"/>
+                            <p:graphicImage id="nationFlag" style="width: 30px" cache="false"
+                                            name="images/#{carBean.newCar.nation.shortName}.png"/>
+                        </p:outputPanel>
+                        <p:message for="nationSelect_editPanel"/>
+                        <p:outputLabel value="#{bundle['license.plate.number']}:" styleClass="required-label"/>
+                        <p:inputText id="lpn_editPanel" styleClass="input-text" value="#{carBean.newCar.licensePlateNumber}"/>
+                        <p:message for="lpn_editPanel"/>
                     </p:panelGrid>
                     <div class="buttons">
-                        <p:commandButton value="#{bundle['add']}" update="cars addPanel requiredMessage"
+                        <p:commandButton value="#{bundle['add']}" update="cars"
                                          action="#{carBean.createCar}"/>
+                        <p:commandButton value="#{bundle['cancel']}" update="cars"
+                                         action="#{carBean.cancelEdit}"/>
                     </div>
                 </p:panel>
-            </p:dialog>
+            </p:panel>
         </h:form>
     </ui:define>
 </ui:composition>

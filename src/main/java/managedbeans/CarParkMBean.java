@@ -27,12 +27,7 @@ public class CarParkMBean extends AbstractMBean {
     private List<CarPark> carParks;
     private CarPark selectedCarPark;
     private CarPark editedCarPark;
-    private PageViewType pageViewType;
     private List<CarParkType> carParkTypes;
-
-    protected enum PageViewType {
-        VIEW, NEW, MODIFY;
-    }
 
     @EJB
     private CarParkService carParkService;
@@ -51,16 +46,18 @@ public class CarParkMBean extends AbstractMBean {
         }};
     }
 
+    @Override
     public void showNewEditPanel() {
-        pageViewType = PageViewType.NEW;
+        super.showNewEditPanel();
         editedCarPark = new CarPark();
         editedCarPark.setAddress(new Address());
         editedCarPark.getAddress().setCity("Debrecen");
         editedCarPark.getAddress().setCountry("Magyarország");
     }
 
+    @Override
     public void showModifyEditPanel() {
-        pageViewType = PageViewType.MODIFY;
+        super.showModifyEditPanel();
         editedCarPark = selectedCarPark;
     }
 
@@ -72,9 +69,6 @@ public class CarParkMBean extends AbstractMBean {
         editedCarPark = null;
     }
 
-    public boolean editPanelRendered() {
-        return PageViewType.NEW.equals(pageViewType) || PageViewType.MODIFY.equals(pageViewType);
-    }
 
     public void cancelEdit() {
         pageViewType = PageViewType.VIEW;
